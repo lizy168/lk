@@ -2,7 +2,10 @@ name: LK CI (Clang)
 
 # Brute force build a bunch of variants of LK in parallel jobs.
 
-on: [ push, pull_request ]
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
 
 jobs:
   build:
@@ -72,6 +75,7 @@ jobs:
       if: ${{ matrix.project == 'qemu-virt-arm64-test' }}
       shell: bash
       run: |
+        env -i DEBIAN_FRONTEND=noninteractive sudo apt-get update
         env -i DEBIAN_FRONTEND=noninteractive sudo apt-get install -y qemu-system-arm
     - name: unittest
       if: ${{ matrix.project == 'qemu-virt-arm64-test' }}
